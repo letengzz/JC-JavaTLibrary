@@ -6,6 +6,8 @@
 
 ![image-20221023223335814](https://cdn.jsdelivr.net/gh/letengzz/Two-C@main/img/Java/202210232233356.png)
 
+**注意**：也可以定义Class时，写入 `包名.类名`即可完成创建包及创建类。
+
 ### 使用Eclipse
 
 略
