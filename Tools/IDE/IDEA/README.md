@@ -24,7 +24,7 @@ IDEA语言上支持：
 - [IDEA插件](plugins.md)
 - [IDEA快捷键]()
 - [模板](templates.md)
-- [Dubug调试]()
+- [断点调试](debug.md)
 - [关联数据库]()
 - [关联GitHub]()
 - [配置Maven]()

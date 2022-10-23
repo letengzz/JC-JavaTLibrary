@@ -6,6 +6,9 @@
    - 从VCS导入工程
 2. ![image-20221014135357984](https://cdn.jsdelivr.net/gh/letengzz/Two-C@main/img/Java/202210232012343.png)
 
+**注意**：与旧版本不同，工程目录后不是工程名称，请仔细看好下方目录提示！
+
 **注意**：IntelliJ IDEA 没有类似 Eclipse 的工作空间的概念(Workspaces)，最大单元就是 Project。这里可以把 Project 理解为 Eclipse 中的 Workspace。
 
 ![image-20221015222733489](https://cdn.jsdelivr.net/gh/letengzz/Two-C@main/img/Java/202210232012428.png)
+
