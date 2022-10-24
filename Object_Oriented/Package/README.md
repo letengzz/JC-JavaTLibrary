@@ -262,7 +262,9 @@ Java SE 提供了一些系统包，其中包含了 Java 开发中常用的基础
 
 ## 包作用域
 
-位于同一个包的类，可以访问包作用域的字段和方法。不用`public`、`protected`、`private`修饰的字段和方法就是包作用域。
+位于同一个包的类，可以访问包作用域的字段和方法。
+
+包作用域是指一个类允许访问同一个`package`的没有`public`、`private`修饰的`class`，以及没有`public`、`protected`、`private`修饰的字段和方法。
 
 **例**：`Person`类定义在`hello`包下面
 
@@ -277,7 +279,7 @@ public class Person {
 }
 ```
 
-`Main`类也定义在`hello`包下面：
+`Main`类也定义在`hello`包下面，只要在同一个包，就可以访问`package`权限的`class`、`field`和`method`：
 
 ```
 package hello;
@@ -289,6 +291,8 @@ public class Main {
     }
 }
 ```
+
+**注意**：包名必须完全一致，包没有父子关系，`com.apache`和`com.apache.abc`是不同的包。
 
 # 使用自定义包
 
@@ -358,3 +362,4 @@ java 类名.文件名
 
 
 - 包名推荐使用倒置的域名，例如`org.apache`
+
