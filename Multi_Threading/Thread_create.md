@@ -69,42 +69,17 @@ public class Main {
 }
 ```
 
+Runnable和Thread区别:
+
+* 适合多个相同的程序代码，去处理同一个资源
+* 避免了Java单继承的局限性
+* 线程池，线程池的参数只认Runnable接口
+
 # 线程的执行顺序
 
 线程的执行顺序：首先运行主线程，当创建Thread对象后，调用`start()`启动新线程。当`start()`方法被调用时，JVM就创建了一个新线程并开始执行。主线程定义在新线程之前的方法或语句会先执行。新线程创建后，主线程之后的方法或语句不能确定其与新线程方法或语句的位置。**因为从新线程开始运行以后，两个线程就开始同时运行了，并且由操作系统调度，程序本身无法确定线程的调度顺序**。当新线程的run()方法执行结束，新线程就结束了。mian方法结束时，主线程也结束了。
 
 **例**：
-
-```java
-public class Main {
-    public static void main(String[] args) {
-        System.out.println("main start...");
-        Thread t = new Thread() {
-            public void run() {
-                System.out.println("thread run...");
-                System.out.println("thread end.");
-            }
-        };
-        t.start();
-        System.out.println("main end...");
-    }
-}
-```
-
-`main`线程执行的代码有4行，首先打印`main start`，然后创建`Thread`对象，紧接着调用`start()`启动新线程。当`start()`方法被调用时，JVM就创建了一个新线程，我们通过实例变量`t`来表示这个新线程对象，并开始执行。
-
-接着，`main`线程继续执行打印`main end`语句，而`t`线程在`main`线程执行的同时会并发执行，打印`thread run`和`thread end`语句。
-
-当`run()`方法结束时，新线程就结束了。而`main()`方法结束时，主线程也结束了。
-
-我们再来看线程的执行顺序：
-
-1. `main`线程肯定是先打印`main start`，再打印`main end`；
-2. `t`线程肯定是先打印`thread run`，再打印`thread end`。
-
-但是，除了可以肯定，`main start`会先打印外，`main end`打印在`thread run`之前、`thread end`之后或者之间，都无法确定。因为从`t`线程开始运行以后，两个线程就开始同时运行了，并且由操作系统调度，程序本身无法确定线程的调度顺序。
-
-要模拟并发执行的效果，我们可以在线程中调用`Thread.sleep()`，强迫当前线程暂停一段时间：
 
 ```java
 public class Main {
@@ -128,7 +103,18 @@ public class Main {
 }
 ```
 
-`sleep()`传入的参数是毫秒。调整暂停时间的大小，我们可以看到`main`线程和`t`线程执行的先后顺序。
+`main`线程执行的代码有4行，首先打印`main start`，然后创建`Thread`对象，紧接着调用`start()`启动新线程。当`start()`方法被调用时，JVM就创建了一个新线程，我们通过实例变量`t`来表示这个新线程对象，并开始执行。
+
+接着，`main`线程继续执行打印`main end`语句，而`t`线程在`main`线程执行的同时会并发执行，打印`thread run`和`thread end`语句。
+
+当`run()`方法结束时，新线程就结束了。而`main()`方法结束时，主线程也结束了。
+
+我们再来看线程的执行顺序：
+
+1. `main`线程肯定是先打印`main start`，再打印`main end`；
+2. `t`线程肯定是先打印`thread run`，再打印`thread end`。
+
+但是，除了可以肯定，`main start`会先打印外，`main end`打印在`thread run`之前、`thread end`之后或者之间，都无法确定。因为从`t`线程开始运行以后，两个线程就开始同时运行了，并且由操作系统调度，程序本身无法确定线程的调度顺序。
 
 **注意**：直接调用`Thread`实例的`run()`方法是无效的：
 
