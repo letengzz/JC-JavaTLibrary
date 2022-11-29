@@ -1,0 +1,7 @@
+Windows Registry Editor Version 5.00 
+[HKEY_CLASSES_ROOT\.md]
+@="Typora.md"  #需要提别注意这里是Typora.md而不是Typora.exe"
+"Content Type"="text/markdown"
+"PerceivedType"="text" 
+[HKEY_CLASSES_ROOT\.md\ShellNew]
+"NullFile"=""	
