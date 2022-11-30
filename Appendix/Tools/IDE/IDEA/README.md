@@ -12,14 +12,15 @@ IDEA语言上支持：
 
 官网提供的详细使用文档： https://www.jetbrains.com/help/idea/meet-intellij-idea.html
 
-- [JetBrains简介](Jetbrains.md)
-- [IDEA主要优势](idea_advantage.md)
-- [IDEA的安装与卸载](install_uninstall.md)
-- [IDEA的激活](idea_activate.md)
-- [安装目录结构、设置目录结构](directory_structure.md)
-- [创建普通Java工程并运行](create_java.md)
-- [创建Java Web工程](create_javaweb.md)
-- [创建Maven工程]()
+- [JetBrains简介](Basis/Jetbrains.md)
+- [IDEA主要优势](Basis/idea_advantage.md)
+- [IDEA的安装与卸载](Basis/install_uninstall.md)
+- [IDEA的激活](Basis/idea_activate.md)
+- [安装目录结构、设置目录结构](Basis/directory_structure.md)
+- [创建普通Java工程并运行](Create/create_java.md)
+- [创建Java Web工程并运行](Create/create_javaweb.md)
+- [创建Maven工程](Create/create_maven.md)
+- [创建模块Module]()
 - [Java工程相关操作](project.md)
 - [IDEA常用设置](general_settings.md)
 - [IDEA插件](plugins.md)
