@@ -1,0 +1,382 @@
+第一章、 数据库和表的基本操作
+一、数据库基础知识
+1、创建数据库的基本语法：
+ create database 数据库名称;
+create database itcast;
+2、查看数据库的SQL语句：
+ show databases;
+show databases;
+3、查看创建好的数据库的信息的SQL语句：
+ show create database 数据库名称;
+show create database itcast;
+4、修改数据库编码的基本语法：
+ alter database 数据库名称 default charaster set 编码方式 collate 编码方式_bin;
+alter database itcast default character set gbk collate gbk_bin;
+5、删除数据库的基本语法：
+ drop database 数据库名称;
+drop database itcast;
+二、数据表的基本操作
+二-1、创建数据表
+1、创建一个数据库
+create database itcast;
+2、选择创建的数据库
+use itcast;
+3、创建一个数据表
+ create table 表名
+	(字段名1,数据类型[完整性约束条件],
+	 字段名2,数据类型[完整性约束条件],
+	 ……
+	 字段名n,数据类型[完整性约束条件]);
+create table tb_grade
+ (id int(11),name varchar(20),grade float);
+4、查看数据表是否创建成功
+show tables;
+二-2、查看数据表
+1、使用show create table查看数据表(基本语法)还可查看表的字符编码
+[在MySQL中,'show create table 表名\G;'语句可以查看某表的详细信息,加'\G'使显示结果整齐美观]
+ show create table 表名\G;
+show create table tb_grade\G;
+2、使用describe语句查看数据表(基本语法)
+ describe 表名;或简写为：desc 表名;
+describe tb_grade;
+二-3、修改数据表
+1、修改表名
+ alter table 旧表名 rename [to] 新表名;[关键字‘to’是可选的,不影响语句执行]
+ //先查看数据库的所有表用show tables语句
+show tables;
+ //再修改表名用alter table语句
+alter table tb_grade rename to grade;
+show tables;
+2、修改字段名
+ alter table 表名 change 旧字段名 新字段名 新数据类型;[其中‘新数据类型’不能为空]
+ //先修改字段名
+alter table grade change name usernam varchar(20);
+ //再验证字段名是否修改成功
+desc grade;
+3、修改字段的数据类型
+ alter table 表名 modify 字段名 数据类型;
+ //先查看修改字段所在的表的结构
+desc grade;
+ //再修改字段的数据类型
+alter table grade modify id int(20);
+desc grade;
+4、添加字段
+ alter table 表名 add 新字段名 数据类型
+	[约束条件][first|after已存在字段名];
+ [‘first’用于将新添加的字段设置为表的第一个字段,‘after’用于将新添加的字段添加到指定的'已存在字段名'的后面;都为可选参数]
+ //先添加字段
+alter table grade add age int(10);
+ //再验证字段是否添加成功
+desc grade;
+5、删除字段
+ alter table 表名 drop 字段名;
+ //先删除字段
+alter table grade drop age;
+ //再验证字段是否删除成功
+desc grade;
+6、修改字段的排列位置
+ alter table 表名 modify 字段名1 数据类型 first|after 字段名2;
+ [‘字段名1’‘数据类型’指修改位置的字段;
+ ‘first’将字段1修改为表的第一个字段,‘after字段名2’将字段1插入到字段2的后面]
+ //1.先修改字段为表的第一个字段
+alter table grade modify username varchar(20) first;
+ //2.先修改字段将其放入其它字段后
+alter table grade modify id int(20) after grade;
+ //再验证字段是否修改成功
+desc grade;
+二-4、删除数据表[删除没有关联关系的数据表]
+ drop table 表名;
+ //先删除数据表
+drop table grade;
+ //再验证数据表是否删除成功
+desc grade;
+三、表的约束
+三-1、主键约束[用于唯一标识对应的记录,最多只能有一个,
+ 定义为‘primary key’的字段不能有重复值且不能为null值]
+1、单字段主键(如:id字段是主键)
+ 字段名 数据类型 primary key
+create table example01(id int primary key,
+ name varchar(20),grade float);
+2、多字段主键(stu_id和course_id两个字段共同作为主键)
+ primary key (字段名1,字段名2,…,字段名n)
+create table example02(stu_id int,course_id int,
+ grade float,primary key(stu_id,course_id));
+三-2、非空约束[字段的值不能为null,同一数据表中可定义多个非空字段]
+ 字段名 数据类型 not null;
+create table example04(id int primary key,
+ name varchar(20) not null,grade float);
+三-3、唯一约束[保证数据表中字段的唯一性,表中字段的值不能重复出现]
+ 字段名 数据类型 unique;
+create table example05(id int primary key,
+ stu_id int unique,name varchar(20) not null);
+三-4、默认约束[给数据表中的字段指定默认值]
+ 字段名 数据类型 default 默认值;
+create table example06(id int primary key auto_increment,
+ stu_id int unique,grade float default 0);
+四、设置表的字段值自动增加[为表中插入的新纪录自动生成唯一的id,约束的字段为整数类型,值从1开始自增]
+ 字段名 数据类型 auto_increment;
+create table example05(id int primary key auto_increment,
+ stu_id int unique,grade float);
+
+
+第二章、 添加、更新与删除数据
+一、添加数据
+一-1、为表中所有字段添加数据[insert语句]
+1、insert语句中指定所有字段名
+ insert into 表名 (字段名1,字段名2,…) 
+	values (值1,值2,…);
+create database chapter03;
+use chapter03;
+create table student(id int(4),
+ name varchar(20) not null,grade float);
+insert into student (id,name,grade)
+ values (1,'张三',98.5),(2,'李四',95);
+select * from student;
+2、insert语句中不指定字段名
+ insert into 表名 values (值1,值2,…);
+insert into student values (3,'王五',61.5);
+select * from student;
+3、insert语句的其它用法[为表中指定的字段或者全部字段添加数组]
+ insert into 表名
+	set 字段名1=值1[字段名2=值2,……];
+insert into student
+ set id=5,name='boya',grade=99;
+select * from student;
+一-2、为表的指定字段添加数据
+ insert into 表名 (字段名1,字段名2,…) 
+	values (值1,值2,…);
+insert into student (id,name) values (4,'赵六');
+select * from student;
+insert into student (grade,name) values (55,'孙斌');
+select * from student;
+一-3、同时添加多条记录
+ insert into 表名[(字段名1,字段名2,……)]
+	values(值1,值2,……),(值1,值2,……),
+	……(值1,值2,……);
+insert into student values
+(6,'李磊',99),(7,'韩梅梅',100),(8,'poly',40.5);
+insert into student(id,name) values
+(9,'刘备'),(10,'关羽'),(11,'张飞');
+//使用where子句来指定查询条件[where id>8查询id大于8的记录]
+select * from student;
+/*select * from student where id>8;*/
+二、更新数据
+ update 表名 set 字段名1=值1[,字段名2=值2,…]
+	[where条件表达式]/*用于指定更新数据需要满足的条件*/
+1、update更新部分数据
+update student set name='曹操',grade=50
+ where id=1;
+update student set grade=100
+ where id<4;
+2、update更新全部数据
+update student set grade=80;
+三、删除数据
+三-1、关键字truncate[通常被认为是DDL语句,只用于
+删除所有数据,再添加数据是字段的默认初始值为1]
+ truncate [table] 表名
+create table tab_truncate
+  (id int(3) primary key auto_increment,
+   name varchar(4));
+insert into tab_truncate(name)
+  values ('A'),('B'),('C');
+truncate table tab_truncate;
+三-2、delete语句[是DML语句,可删除部分数据,再添
+加数据是字段的默认初始值为‘删除前字段最大值+1’]
+ delete from 表名 [where条件表达式]
+1、delete删除部分数据
+delete from student where id=11;
+delete from student where id>5;
+2、delete删除全部数据
+delete from student;
+
+第三章、 单表查询
+一、简单查询
+一-1、select语句
+ select [distinct] * |字段名1,字段名2,…		{1}
+	from 表名				{2}
+	[where条件表达式1]			{3}
+	[group by 字段名 [having条件表达式2]]	{4}
+	[order by 字段名 [asc|desc]]		{5}
+	[limit [offset] 记录数]			{6}
+/*{1}‘字段名1,字段名2,…’指从表中查询的指定字段,
+‘*’指表中所有字段[两者为互斥关系,任选其一];
+‘distinct’用于剔除查询结果中重复的数据
+{2}‘from 表名’指从指定的表中查询数据
+{3}‘where’用于指定查询条件
+{4}‘group by’用于将查询结果按照指定字段进行分组,
+‘having’用于对分组后的结果进行过滤
+{5}‘order by’用于将查询结果按照指定字段进行排列[默认升序],
+‘asc’升序排列,‘desc’降序排列
+{6}‘limit’用于限制查询结果的数量,‘offset’偏移量,
+为0从查询结果的第一条记录开始,为1从查询结果的第二条记录开始,
+‘记录数’表示返回查询记录的条数*/
+一-2、查询所有字段
+1、在select语句中指定所有字段
+ select 字段名1,字段名2,……from 表名;
+create database chapter04;
+use chater04;
+create table student
+ (id int(3) primary key auto_increment,
+  name varchar(20) not null,
+  grade float,gender char(2));
+insert into student(name,grade,gender)
+ values('宋江',40,'男'),('吴勇',100,'男'),
+ ('秦明',90,'男'),('胡三娘',88,'女'),
+ ('孙二娘',66,'女'),('吴淞',86,'男'),
+ ('林冲',92,'男'),('燕青',90,null);
+select id,name,grade,gender from student;
+2、在select语句中使用*代替所有字段
+ select * from 表名;
+select * from student;
+一-3、查询指定字段
+ select 字段名1,字段名2,……from 表名;
+select name,gender from student;
+二、按条件查询
+二-1、带关系运算符的查询
+/*'='等于,'<>'\'!='不等于,'<'小于,
+ '<='小于等于,'>'大于,'>='大于等于*/
+ select 字段名1,字段名2,…… 
+	from 表名 where条件表达式;
+select id,name from student where id=4;
+二-2、带in关键字的查询['not'查询不在in关键字的记录]
+ select *|{字段名1,字段名2,……} from 表名 
+	where 字段名 [not] in (元素1,元素2,……);
+select id,name,grade,gender from student
+ where id in (1,2,3);
+二-3、带between and关键字的查询
+ select *|{字段名1,字段名2,……} from 表名
+	where 字段名 [not] between 值1 and 值2;
+select id,name from student 
+ where id between 2 and 5;
+二-4、空值查询
+ select *|{字段名1,字段名2,……} from 表名
+	where 字段名 is [not] null;
+select id,name,grade,gender from student
+ where gender is null;
+二-5、带distinct关键字的查询
+ select distinct 字段名1(字段名2,……) from 表名;
+select distinct gender from student;
+二-6、带like关键字的查询
+ select *|{字段名1,字段名2,……} from 表名
+	where 字段名 [not] like '匹配字符串';
+1、'%'通配符[‘s%’以字符s开头,‘w%g’以字符w开始,g结尾,‘%y%’]
+select id,name from student where name like 's%';
+select id,name from student where name like 'w%g';
+select id,name from student where name like '%y%';
+2、'_'通配符[只匹配单个字符]
+3、'\%'匹配%字面值,'\_'匹配_字面值
+二-7、带and关键字的多条件查询
+ select *|{字段名1,字段名2,……} from 表名
+	where 条件表达式1 and 条件表达式2[…];
+select id,name,gender from student
+ where id<5 and gender='女';
+二-8、带or关键字的多条件查询[只需满足一个条件]
+ select *|{字段名1,字段名2,…} from 表名
+	where条件表达式1 or 条件表达式2[…or 条件表达式n];
+/*'or''and'一起用:select name,grade,gender from student
+where gender='女' or gender='男' and grade=100;*/
+三、高级查询
+三-1、聚合函数
+/*'count()'返回某列的行数,'sum()'返回某列值的和,
+'avg()'返回某列的平均值,'max()'返回某列的最大值,
+'min()'返回某列的最小值*/
+1、count()函数
+ select count(*) from 表名;
+select count(*) from student;
+2、sum()函数
+ select sum(字段名) from 表名;
+select sum(grade) from student;
+3、avg()函数
+ select avg(字段名) from 表名;
+select avg(grade) from student;
+4、max()函数
+ select max(字段名) from 表名;
+select max(grade) from student;
+5、min()函数
+ select min(字段名) from 表名;
+select min(grade) from student;
+三-2、对查询结果排序
+ select 字段名1,字段名2,…… from 表名 
+	order by 字段名1 [asc|desc],字段名2 [asc|desc]……
+select * from student 
+ order by grade desc,gender asc;
+三-3、分组查询[having关键字对分组后的内容进行过滤]
+ select 字段名1,字段名2,…… from 表名 
+	group by 字段名1,字段名2,…[having条件表达式];
+1、单独使用group by分组
+select * from student group by gender;
+2、group by和聚合函数一起使用
+select count(*),gender from student 
+ group by gender;
+3、group by和having关键字一起使用
+select sum(grade),gender from student 
+ group by gender having sum(grade)<300;
+三-4、使用limit限制查询结果的数量
+关键字limit指定查询结果从哪一条记录开始
+以及一共查询多少条信息
+ select 字段名1,字段名2,…… from 表名
+	limit [offset,] 记录数
+select * from student limit 4;
+三-5、函数(列表)
+/*'abs(x)'返回x的绝对值;'sqrt(x)'返回x的
+非负2次方根;
+*/
+
+
+
+
+第四章、 多表查询
+一、外键
+一-1、外键
+create database chapter05;
+use chapter05;
+create table grade(id int(4) not null 
+ primary key,name varchar(36));
+create table student(sid int(4) not null 
+ primary key,sname varchar(36),
+ gid int(4) not null);
+一-2、为表添加外键约束
+ alter table 表名 add constraint fk_id 
+	foreign key(外键字段名) references 
+	外键表名(主键字段名);
+alter table 表名 add constraint fk_id 
+	foreign key(外键字段名) references
+
+
+第五章、 事务与存储过程
+
+
+第六章、 视图
+一、
+二、视图管理
+二-1、创建视图的语法格式
+ create [or replace] [algorithm=
+	{undefined|merge|temptable}]
+ view view_name[(coiumn_list)] 
+ as select_statement 
+ [with[cascaded|local]check option]
+/*1、create:创建视图关键字;
+  2、or replace:给定此子句可替换已有视图;
+  3、algorithm:可选,表示视图选择的算法;
+  4、undefined:MySQL将自动选择所要使用的算法;*/
+二-2、在单表上创建视图
+create database chapter07;
+use chatper07;
+create table student(s_id int(3),
+ name varchar(20),math float,chinese float);
+insert into student(s_id,name,math,chinese)
+ values(1,'Tom',80,78),(2,'Jack',70,80),
+ (3,'Lucy',97,95);
+create view view_stu as select math,chinese,
+ math+chinese from student;
+select * from view_stu;
+二-3、在多表上创建视图
+
+
+
+
+第七章、 数据库的高级操作
+
+
+
+第八章、 总结：MySOL数据库知识整合应用

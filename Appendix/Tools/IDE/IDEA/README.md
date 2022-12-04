@@ -19,14 +19,22 @@ IDEA语言上支持：
 - [安装目录结构、设置目录结构](Basis/directory_structure.md)
 - [创建普通Java工程并运行](Create/create_java.md)
 - [创建Java Web工程并运行](Create/create_javaweb.md)
+
 - [创建Maven工程](Create/create_maven.md)
-- [创建模块Module]()
-- [Java工程相关操作](project.md)
+
+- [创建模块Module](Create/create_module.md)
+
+
+
+- [Java工程相关操作](Project/README.md)
 - [IDEA常用设置](general_settings.md)
-- [IDEA插件](plugins.md)
-- [IDEA快捷键]()
-- [Templates模板](templates.md)
-- [Debug断点调试]()
-- [关联数据库]()
-- [关联GitHub]()
-- [生成JavaDOC]()
+- [IDEA快捷键](Keyboard_Shortcuts/README.md)
+- [Templates模板](Templates/README.md)
+- [Debug断点调试](Debug/README.md)
+
+
+
+- [关联数据库](Associated/associated_database.md)
+- 关联GitHub
+
+- [IDEA推荐插件](Plugins/plugins.md)
